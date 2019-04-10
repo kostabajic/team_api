@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TeamMember extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'role_id',
+    ];
+
     // assoc to User
     public function user(): BelongsTo
     {
@@ -17,5 +26,10 @@ class TeamMember extends Model
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
+    }
+
+    public function getRoleAttribute()
+    {
+        return  Role::whereId($this->getAttribute('role_id'))->first()->title;
     }
 }

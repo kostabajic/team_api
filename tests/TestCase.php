@@ -18,6 +18,7 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->seed();
         $this->faker = Faker::create();
     }
 
@@ -28,5 +29,12 @@ abstract class TestCase extends BaseTestCase
     {
         $this->artisan('migrate:reset');
         parent::tearDown();
+    }
+
+    public function seed($class = 'DatabaseSeeder')
+    {
+        $this->artisan('db:seed', ['--class' => $class]);
+
+        return $this;
     }
 }
