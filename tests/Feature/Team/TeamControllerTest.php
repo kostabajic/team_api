@@ -3,6 +3,7 @@
 namespace Tests\Feature\Team;
 
 use Tests\TestCase;
+use App\Team;
 
 class TeamControllerTest extends TestCase
 {

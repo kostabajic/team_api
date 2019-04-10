@@ -23,8 +23,8 @@ class UserControllerTest extends TestCase
             'email' => $this->faker->unique()->safeEmail,
         ];
 
-        $this->post('/api/users', $data)
-            ->assertStatus(201);
+        $response = $this->post('/api/users', $data);
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     /** @test */
@@ -36,8 +36,8 @@ class UserControllerTest extends TestCase
             'email' => $this->faker->unique()->safeEmail,
         ];
 
-        $this->put('/api/users/'.$user->id, $data)
-            ->assertStatus(200);
+        $response = $this->put('/api/users/'.$user->id, $data);
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     /** @test */
