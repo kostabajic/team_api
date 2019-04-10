@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\User;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -88,14 +88,5 @@ class UserController extends Controller
         $user->delete();
 
         return response()->json([], 204);
-    }
-
-    protected function userNotFound()
-    {
-        return response()->json([
-            'error' => [
-                'message' => 'User not found',
-            ],
-        ], 404);
     }
 }

@@ -22,3 +22,8 @@ Route::get('/teams', 'Team\TeamController@index');
 Route::post('/teams', 'Team\TeamController@store');
 Route::put('/teams/{id}', 'Team\TeamController@update');
 Route::delete('/teams/{id}', 'Team\TeamController@destroy');
+
+// member routes (user to teams)
+Route::get('/users/{user_id}/teams', 'User\UserTeamController@getUserTeams');
+Route::put('/users/{user_id}/teams', 'User\UserTeamController@updateUserTeams');
+Route::put('/users/{user_id}/teams/{team_id}', 'User\UserTeamController@addUserToTeam');

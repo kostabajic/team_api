@@ -2,13 +2,12 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class User extends Authenticatable
+class User extends Model
 {
-    use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -17,4 +16,14 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email',
     ];
+
+    public function teams(): BelongsToMany
+    {
+        return $this->belongsToMany(Team::class, 'team_members');
+    }
+
+    public function members(): HasMany
+    {
+        return $this->hasMany(TeamMember::class);
+    }
 }

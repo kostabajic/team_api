@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Team;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\Team;
 
-class TeamController extends Controller
+class TeamController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -87,14 +87,5 @@ class TeamController extends Controller
         $team->delete();
 
         return response()->json([], 204);
-    }
-
-    protected function teamNotFound()
-    {
-        return response()->json([
-            'error' => [
-                'message' => 'Team not found',
-            ],
-        ], 404);
     }
 }

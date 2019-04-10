@@ -24,7 +24,7 @@ class UserControllerTest extends TestCase
         ];
 
         $response = $this->post('/api/users', $data);
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(201, $response->getStatusCode());
     }
 
     /** @test */
