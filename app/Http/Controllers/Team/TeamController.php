@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Team;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Team;
 
 class TeamController extends Controller
 {
@@ -14,72 +15,86 @@ class TeamController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json(['data' => Team::all(), 200]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+        ]);
+
+        return Team::create($request->all());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return Team::findOrFail($id);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+        ]);
+        try {
+            $team = Team::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->teamNotFound();
+        }
+
+        $team->update($request->all());
+
+        return response()->json($team, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        try {
+            $team = Team::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->teamNotFound();
+        }
+        $team->delete();
+
+        return response()->json([], 204);
+    }
+
+    protected function teamNotFound()
+    {
+        return response()->json([
+            'error' => [
+                'message' => 'Team not found',
+            ],
+        ], 404);
     }
 }

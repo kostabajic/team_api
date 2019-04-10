@@ -19,11 +19,11 @@ class TeamControllerTest extends TestCase
     public function test_can_create_an_team_status_201()
     {
         $data = [
-      'title' => $this->faker->word,
-    ];
+            'title' => $this->faker->word,
+        ];
 
         $this->post('/api/teams', $data)
-      ->assertStatus(201);
+            ->assertStatus(201);
     }
 
     /** @test */
@@ -31,11 +31,11 @@ class TeamControllerTest extends TestCase
     {
         $team = factory(Team::class)->create();
         $data = [
-      'title' => $this->faker->word,
-    ];
+            'title' => $this->faker->word,
+        ];
 
         $this->put('/api/teams/'.$team->id, $data)
-      ->assertStatus(200);
+            ->assertStatus(200);
     }
 
     /** @test */
@@ -44,13 +44,13 @@ class TeamControllerTest extends TestCase
         $team = factory(Team::class)->create();
 
         $this->delete('/api/teams/'.$team->id)
-      ->assertStatus(204);
+            ->assertStatus(204);
     }
 
     /** @test */
     public function test_cant_delete_an_team_status_204()
     {
         $this->delete('/api/teams/1')
-      ->assertStatus(404);
+            ->assertStatus(404);
     }
 }
