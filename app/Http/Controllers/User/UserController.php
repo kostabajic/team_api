@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
 use App\User;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends ApiController
 {
@@ -85,7 +86,14 @@ class UserController extends ApiController
         } catch (ModelNotFoundException $e) {
             return $this->userNotFound();
         }
-        $user->delete();
+        DB::transaction(function () use ($user) {
+            $owner_teams = $user->owner_teams;
+            foreach ($owner_teams as $owner_team) {
+                $owner_team->owner()->dissociate();
+                $owner_team->save();
+            }
+            $user->delete();
+        });
 
         return response()->json([], 204);
     }

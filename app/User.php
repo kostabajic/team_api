@@ -26,4 +26,9 @@ class User extends Model
     {
         return $this->hasMany(TeamMember::class);
     }
+
+    public function owner_teams(): HasMany
+    {
+        return $this->hasMany(Team::class, 'owner_id');
+    }
 }

@@ -27,3 +27,8 @@ Route::delete('/teams/{id}', 'Team\TeamController@destroy');
 Route::get('/users/{user_id}/teams', 'User\UserTeamController@getUserTeams');
 Route::put('/users/{user_id}/teams', 'User\UserTeamController@updateUserTeams');
 Route::put('/users/{user_id}/teams/{team_id}', 'User\UserTeamController@addUserToTeam');
+
+// owner routes
+Route::get('/teams/{team_id}/owners', 'Team\TeamUserController@getTeamOwner');
+Route::put('/teams/{team_id}/owners/{user_id}', 'Team\TeamUserController@setTeamOwner');
+Route::delete('/teams/{team_id}/owners', 'Team\TeamUserController@deleteTeamOwner');
