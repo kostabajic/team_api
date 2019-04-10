@@ -62,11 +62,9 @@ class UserController extends ApiController
             'name' => 'required',
             'email' => 'required|email',
         ]);
-        try {
-            $user = User::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->userNotFound();
-        }
+
+        $user = User::findOrFail($id);
+
         $user->update($request->all());
 
         return $user;
@@ -81,11 +79,8 @@ class UserController extends ApiController
      */
     public function destroy($id)
     {
-        try {
-            $user = User::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->userNotFound();
-        }
+        $user = User::findOrFail($id);
+
         DB::transaction(function () use ($user) {
             $owner_teams = $user->owner_teams;
             foreach ($owner_teams as $owner_team) {

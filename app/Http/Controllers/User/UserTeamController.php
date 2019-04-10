@@ -10,11 +10,7 @@ class UserTeamController extends ApiController
 {
     protected function getUserTeams(int $user_id)
     {
-        try {
-            $user = User::findOrfail($user_id);
-        } catch (ModelNotFoundException $e) {
-            return $this->userNotFound();
-        }
+        $user = User::findOrfail($user_id);
 
         return $this->generateResponse($user);
     }
@@ -26,12 +22,7 @@ class UserTeamController extends ApiController
             'teams_ids.*' => 'int',
         ]);
         $teams_ids = $request->input('teams_ids');
-        try {
-            $user = User::findOrfail($user_id);
-        } catch (ModelNotFoundException $e) {
-            return $this->userNotFound();
-        }
-
+        $user = User::findOrfail($user_id);
         $user->teams()->sync($teams_ids);
 
         return $this->generateResponse($user);
@@ -39,11 +30,7 @@ class UserTeamController extends ApiController
 
     protected function addUserToTeam(int $user_id, int $team_id)
     {
-        try {
-            $user = User::findOrFail($user_id);
-        } catch (ModelNotFoundException $e) {
-            return $this->userNotFound();
-        }
+        $user = User::findOrFail($user_id);
         $user->teams()->syncWithoutDetaching(array($team_id));
 
         return $this->generateResponse($user);

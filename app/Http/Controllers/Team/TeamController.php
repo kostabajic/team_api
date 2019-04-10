@@ -59,12 +59,8 @@ class TeamController extends ApiController
         $this->validate($request, [
             'title' => 'required',
         ]);
-        try {
-            $team = Team::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->teamNotFound();
-        }
 
+        $team = Team::findOrFail($id);
         $team->update($request->all());
 
         return response()->json($team, 200);
@@ -79,11 +75,7 @@ class TeamController extends ApiController
      */
     public function destroy($id)
     {
-        try {
-            $team = Team::findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->teamNotFound();
-        }
+        $team = Team::findOrFail($id);
         $team->delete();
 
         return response()->json([], 204);
