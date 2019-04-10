@@ -3,16 +3,13 @@
 namespace Tests\Feature\Member;
 
 use Tests\TestCase;
-use App\User;
-use App\Team;
 
 class MemberControllerTest extends TestCase
 {
     /** @test */
     public function test_can_change_member_role_status_200()
     {
-        $user = factory(User::class)->create();
-        $team = factory(Team::class)->create();
+        list($user, $team) = $this->createUserTeam();
         $team->members()->attach($user);
         $member_ids = $team->members->pluck('id')->toArray();
         $new_role = 2;
@@ -23,8 +20,7 @@ class MemberControllerTest extends TestCase
     /** @test */
     public function test_cant_wrong_metod_status_405()
     {
-        $user = factory(User::class)->create();
-        $team = factory(Team::class)->create();
+        list($user, $team) = $this->createUserTeam();
         $team->members()->attach($user);
         $member_ids = $team->members->pluck('id')->toArray();
         $new_role = 2;
@@ -36,8 +32,7 @@ class MemberControllerTest extends TestCase
     /** @test */
     public function test_can_change_member_role()
     {
-        $user = factory(User::class)->create();
-        $team = factory(Team::class)->create();
+        list($user, $team) = $this->createUserTeam();
         $team->members()->attach($user);
         $member_ids = $team->members->pluck('id')->toArray();
         $new_role = 2;

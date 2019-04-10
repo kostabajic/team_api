@@ -58,7 +58,7 @@ class UserControllerTest extends TestCase
     /** @test */
     public function test_can_get_users_response_data()
     {
-        $user = factory(User::class, 10)->create();
+        $users = factory(User::class, 10)->create();
         $response = $this->get('/api/users/');
         $response->assertJsonStructure([
              'data' => [
@@ -67,7 +67,7 @@ class UserControllerTest extends TestCase
                  ['email'],
              ],
          ]);
-        $this->assertCount(10, $response->json('data'));
+        $this->assertCount(count($users), $response->json('data'));
     }
 
     /** @test */

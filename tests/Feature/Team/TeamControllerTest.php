@@ -58,7 +58,7 @@ class TeamControllerTest extends TestCase
     /** @test */
     public function test_can_get_teams()
     {
-        factory(Team::class, 10)->create();
+        $teams = factory(Team::class, 10)->create();
         $response = $this->get('/api/teams/');
         $this->assertEquals(200, $response->getStatusCode());
         $response->assertJsonStructure([
@@ -67,7 +67,7 @@ class TeamControllerTest extends TestCase
                 ['title'],
             ],
         ]);
-        $this->assertCount(10, $response->json('data'));
+        $this->assertCount(count($teams), $response->json('data'));
     }
 
     /** @test */

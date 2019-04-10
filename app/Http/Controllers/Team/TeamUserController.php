@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Team;
 
 use App\Http\Controllers\ApiController;
 use App\Team;
+use App\TeamMember;
 use App\User;
+use Illuminate\Http\Request;
 
 class TeamUserController extends ApiController
 {
@@ -24,9 +26,9 @@ class TeamUserController extends ApiController
 
         return response()->json([
             'data' => [
-                    'user_id' => $teamOwner->id,
-                    'name' => $teamOwner->name,
-                ],
+                'user_id' => $teamOwner->id,
+                'name' => $teamOwner->name,
+            ],
         ]);
     }
 
@@ -37,5 +39,44 @@ class TeamUserController extends ApiController
         $team->save();
 
         return response()->json([], 204);
+    }
+
+    protected function getTeamMembers(int $team_id)
+    {
+        $query = TeamMember::with('user')->whereteam_id($team_id);
+
+        return response()->json([
+            'data' => $query->get()->map(function ($teamMember) {
+                return [
+                    'user_id' => $teamMember->user_id,
+                    'member_id' => $teamMember->id,
+                    'member_name' => $teamMember->user->name,
+                    'role' => $teamMember->role,
+                    'role_id' => $teamMember->role_id,
+                ];
+            }),
+        ]);
+    }
+
+    protected function updateTeamMembers(int $team_id, Request $request)
+    {
+        $this->validate($request, [
+            'member_user_ids' => 'required|array',
+            'member_user_ids.*' => 'int',
+        ]);
+        $member_user_ids = $request->input('member_user_ids');
+        $team = Team::findOrfail($team_id);
+        $team->members()->sync($member_user_ids);
+
+        return $this->getTeamMembers($team_id);
+    }
+
+    protected function addTeamMember(int $team_id, int $user_id)
+    {
+        $team = Team::findOrFail($team_id);
+        $user = User::findOrFail($user_id);
+        $team->members()->attach($user);
+
+        return $this->getTeamMembers($team_id);
     }
 }

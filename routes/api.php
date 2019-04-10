@@ -35,3 +35,8 @@ Route::delete('/teams/{team_id}/owners', 'Team\TeamUserController@deleteTeamOwne
 
 //change role for the member on project
 Route::put('/member/{member_id}/roles/{role_id}', 'Member\MemberRoleController@setRole');
+
+// member routes*(tem to users)
+Route::get('/teams/{team_id}/users', 'Team\TeamUserController@getTeamMembers');
+Route::put('/teams/{team_id}/users', 'Team\TeamUserController@updateTeamMembers');
+Route::put('/teams/{team_id}/users/{user_id}', 'Team\TeamUserController@addTeamMember');
